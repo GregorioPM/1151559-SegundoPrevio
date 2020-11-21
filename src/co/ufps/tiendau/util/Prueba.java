@@ -47,15 +47,19 @@ public class Prueba {
 		
 		
 		
-		Cliente cliente=new Cliente();
-		cliente.setId(1);
+	
 		Tienda tienda = new Tienda();
 		tienda.setId(1);
-		List<Tienda> tiendas= new LinkedList<>();
-		tiendas.add(tienda);
-		System.out.println(tienda);
-		cliente.setTiendas(tiendas);
-
+		tienda.setNombre("Milan");
+		tienda.setPropietario("Berlusconi");
+		tienda.setClave("go");
+		tienda.setEmail("milan@gmail.com");
+		tienda.setFacebook("face");
+		tienda.setImagen("https://scontent.fbga1-3.fna.fbcdn.net/v/t1.0-9/p720x720/33020332_1642011672579972_8003355197394911232_o.jpg?_nc_cat=103&ccb=2&_nc_sid=174925&_nc_ohc=SF-bUsyvGewAX_f9KF4&_nc_ht=scontent.fbga1-3.fna&tp=6&oh=cd5d56010eee62012ab04b0c6ade9e0a&oe=5FE00A5E");
+		tienda.setDescripcion("hola mundo");
+		tienda.setLema("siempre adelante");
+		tienda.setWeb("ns");
+        tiDao.update(tienda);
 	}
 
 }
