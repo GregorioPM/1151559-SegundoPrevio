@@ -73,7 +73,10 @@ public class LoginController extends HttpServlet {
 			request.getSession().setAttribute("mensajeservicios", tienda.getServicios().size() > 0 ? "" : "No hay servicios registrados");
 			request.getSession().setAttribute("servicios", tienda.getServicios());
 			request.getRequestDispatcher("servicios.jsp").forward(request, response);
+			return;
 		}
+		List <Tienda> tiendas = tiendaDao.list();;
+		request.getSession().setAttribute("tiendas", tiendas);	
 		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
