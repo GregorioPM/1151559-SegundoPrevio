@@ -10,20 +10,23 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import co.ufps.tiendau.dao.ClienteDao;
 import co.ufps.tiendau.dao.TiendaDao;
+import co.ufps.tiendau.model.Cliente;
 import co.ufps.tiendau.model.Tienda;
 
 /**
- * Servlet implementation class TiendaDao
+ * Servlet implementation class LoginController
  */
-@WebServlet("/Tienda")
-public class TiendaController extends HttpServlet {
+@WebServlet("/Login")
+public class LoginController extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private TiendaDao  tiendaDao= new TiendaDao();
+	private TiendaDao  tiendaDao= new TiendaDao();
+	private ClienteDao  clienteDao= new ClienteDao();
     /**
      * @see HttpServlet#HttpServlet()
      */
-    public TiendaController() {
+    public LoginController() {
         super();
         // TODO Auto-generated constructor stub
     }
@@ -37,11 +40,11 @@ public class TiendaController extends HttpServlet {
 		String action = request.getParameter("action");
 		System.out.println(action);
 			switch(action) {
-			case "new":
+			case "login":
 				showNewForm(request, response);
 				break;
-			case "insert":
-				insertarTienda(request, response);
+			case "logear":
+				logearTienda(request, response);
 				break;
 			
 				
@@ -53,42 +56,30 @@ public class TiendaController extends HttpServlet {
 
 	private void index(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
 		List <Tienda> listatienda = tiendaDao.list();;
 		request.getSession().setAttribute("listatienda", listatienda);	
 		request.getRequestDispatcher("index.jsp").forward(request, response);
-
 	}
 
-
-
-	private void insertarTienda(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
+	private void logearTienda(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		Tienda tienda= new Tienda();
-		tienda.setClave(request.getParameter("password"));
-		tienda.setDescripcion(request.getParameter("descripcion"));
-		tienda.setEmail(request.getParameter("email"));
-		tienda.setFacebook(request.getParameter("facebook"));
-		tienda.setImagen(request.getParameter("imagen"));
-		tienda.setLema(request.getParameter("lema"));
-		tienda.setNombre(request.getParameter("nombre"));
-		tienda.setPropietario(request.getParameter("propietario"));
-		tienda.setWeb(request.getParameter("web"));
-		Tienda tiendaDB = tiendaDao.findByField("email", tienda.getEmail());
-		if (tiendaDB == null) {
-			tiendaDao.insert(tienda);
-			List <Tienda> listatienda = tiendaDao.list();;
-			request.getSession().setAttribute("listatienda", listatienda);	
-		    response.sendRedirect("login.jsp");
-
-		} else {
+		Cliente cliente = clienteDao.findByField("email", request.getParameter("email"));
+		if (cliente != null) {
 			request.getRequestDispatcher("index.jsp").forward(request, response);
 		}
+		Tienda tienda  = tiendaDao.findByField("email", request.getParameter("email"));
+		if (tienda != null) {
+			request.getSession().setAttribute("nombredetienda", tienda.getNombre());
+			request.getSession().setAttribute("mensajeservicios", tienda.getServicios().size() > 0 ? "" : "No hay servicios registrados");
+			request.getSession().setAttribute("servicios", tienda.getServicios());
+			request.getRequestDispatcher("servicios.jsp").forward(request, response);
+		}
+		request.getRequestDispatcher("index.jsp").forward(request, response);
 	}
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		RequestDispatcher dispatcher = request.getRequestDispatcher("registoTienda.jsp");
+		RequestDispatcher dispatcher = request.getRequestDispatcher("login.jsp");
 		dispatcher.forward(request, response);
 	}
 
