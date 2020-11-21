@@ -45,11 +45,15 @@ public class Prueba {
 		ser.setTiendaBean(ti);
 		serDao.insert(ser);
 		
+		
+		
 		Cliente cliente=new Cliente();
 		cliente.setId(1);
 		Tienda tienda = new Tienda();
 		tienda.setId(1);
 		List<Tienda> tiendas= new LinkedList<>();
+		tiendas.add(tienda);
+		System.out.println(tienda);
 		cliente.setTiendas(tiendas);
 
 	}
