@@ -62,9 +62,28 @@ public class TiendaController extends HttpServlet {
 
 
 
-	private void insertarTienda(HttpServletRequest request, HttpServletResponse response) {
+	private void insertarTienda(HttpServletRequest request, HttpServletResponse response)throws ServletException, IOException {
 		// TODO Auto-generated method stub
-		
+		Tienda tienda= new Tienda();
+		tienda.setClave(request.getParameter("password"));
+		tienda.setDescripcion(request.getParameter("descripcion"));
+		tienda.setEmail(request.getParameter("email"));
+		tienda.setFacebook(request.getParameter("facebook"));
+		tienda.setImagen(request.getParameter("imagen"));
+		tienda.setLema(request.getParameter("lema"));
+		tienda.setNombre(request.getParameter("nombre"));
+		tienda.setPropietario(request.getParameter("propietario"));
+		tienda.setWeb(request.getParameter("web"));
+		Tienda tiendaDB = tiendaDao.findByField("email", tienda.getEmail());
+		if (tiendaDB == null) {
+			tiendaDao.insert(tienda);
+			List <Tienda> listatienda = tiendaDao.list();;
+			request.getSession().setAttribute("listatienda", listatienda);	
+		    response.sendRedirect("index.jsp");
+
+		} else {
+			request.getRequestDispatcher("index.jsp").forward(request, response);
+		}
 	}
 
 	private void showNewForm(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
