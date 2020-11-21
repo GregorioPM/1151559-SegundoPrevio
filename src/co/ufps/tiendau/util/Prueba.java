@@ -1,5 +1,8 @@
 package co.ufps.tiendau.util;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import co.ufps.tiendau.dao.ClienteDao;
 import co.ufps.tiendau.dao.ServicioDao;
 import co.ufps.tiendau.dao.TiendaDao;
@@ -42,6 +45,12 @@ public class Prueba {
 		ser.setTiendaBean(ti);
 		serDao.insert(ser);
 		
+		Cliente cliente=new Cliente();
+		cliente.setId(1);
+		Tienda tienda = new Tienda();
+		tienda.setId(1);
+		List<Tienda> tiendas= new LinkedList<>();
+		cliente.setTiendas(tiendas);
 
 	}
 
